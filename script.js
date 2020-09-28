@@ -44,6 +44,24 @@ class Deck {
     totalLength() {
         return (this.main.length + this.winnings.length);
     }
+
+    shuffleMain() { //Credit to Richard Durstenfield for his classic shuffle method, I'll comment it out to better understand it
+        for (var i = this.main.length - 1; i > 0; i--) {         //with the index traversing from the last element to the first...
+            var j = Math.floor(Math.random() * (i + 1));        //the function picks a random element between 1 and the index
+            var temp = this.main[i];                        //set a temp variable as the element at i
+            this.main[i] = this.main[j];                        //i becomes j (the random element)
+            this.main[j] = temp;                                //and j becomes what i was
+        }
+    }
+
+    shuffleWinnings() {
+        for (var i = this.winnings.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = this.winnings[i];
+            this.winnings[i] = this.main[j];
+            this.winnings[j] = temp;                                
+        }
+    }
 }
 
 
@@ -52,10 +70,7 @@ function determineWinner() {
 }
 
 //THE START METHOD:----------------------------------------
-//Instantiations:
 let totalDeck = new Deck([], []);
-let playerDeck = new Deck([], []);
-let computerDeck = new Deck([], []);
 let gameHasEnded = false;
 
 //Make the Deck
@@ -68,8 +83,16 @@ for (let i = 1; i <= 4; i++) {
     if (i == 4) console.log("done!");
 }
 
+//Shuffle
+totalDeck.shuffleMain();
+
+//Split the Deck
+let playerDeck = new Deck([], []);
+let computerDeck = new Deck([], []);
+
 //THE GAME ------------------------------------------------
 console.log(totalDeck.main);
+
 console.log(playerDeck.main);
 console.log(computerDeck.main);
 
