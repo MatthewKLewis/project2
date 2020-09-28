@@ -118,5 +118,19 @@ function flipCard() {
         playerCardImage.innerText = playerCardInPlay.number + " of " + playerCardInPlay.resolveSuit();
         computerCardImage.innerText = computerCardInPlay.number + " of " + computerCardInPlay.resolveSuit();
 
+        playerDeckImage.innerText = playerDeck.main.length;
+        computerDeckImage.innerText = computerDeck.main.length;
+
+        playerPrizesImage.innerText = playerDeck.winnings.length;
+        computerPrizesImage.innerText = computerDeck.winnings.length;
+
+        console.log("-----");
+        console.log("flipping cards...");
+        console.log("the player flipped..." + playerCardInPlay.number + " of " + playerCardInPlay.suit);
+        console.log("the computer flipped..." + computerCardInPlay.number + " of " + computerCardInPlay.suit);
+
+        if (playerCardInPlay.number > computerCardInPlay.number) {
+                
+
     }
 }

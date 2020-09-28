@@ -1,0 +1,60 @@
+body { text-align: center; font-family: Major Mono Display; background-color: rgb(53, 161, 165);} 
+
+.gameBoard {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto;
+    padding: 10px;
+    margin: 10px;
+}
+
+.deck {
+    width: 200px;
+    height: 300px;
+    background-color: red;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 5px solid black;
+    font-size: 32px;
+}
+
+.card {
+    width: 200px;
+    height: 300px;
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 5px solid black;
+    font-size: 32px;
+    text-align: center;
+}
+
+.prizes {
+    width: 200px;
+    height: 300px;
+    background-color: pink;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    border: 5px solid black;
+    font-size: 32px;
+}
+
+.buttons {
+    display: flex;
+    place-items: center;
+}
+
+#flipButton {
+    text-align: center;
+    width: 300px;
+    margin: 0 auto;
+}
+
+#poButton {
+    text-align: center;
+    width: 300px;
+    margin: 0 auto;
+}
