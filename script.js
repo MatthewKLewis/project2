@@ -1,3 +1,13 @@
+//DOM queries
+let playerDeckImage = document.getElementById("playerDeck");
+let computerDeckImage = document.getElementById("computerDeck");
+
+let playerCardImage = document.getElementById("playerCard");
+let computerCardImage = document.getElementById("computerCard");
+
+let playerPrizesImage = document.getElementById("playerPrizes");
+let computerPrizesImage = document.getElementById("computerPrizes");
+
 //1 = Clubs, 2 = Diamonds, 3 = Hearts, 4 = Spades
 //11-J, 12-Q, 13-K, 14-A
 class Card {
@@ -45,21 +55,12 @@ class Deck {
         return (this.main.length + this.winnings.length);
     }
 
-    shuffleMain() { //Credit to Richard Durstenfield for his classic shuffle method, I'll comment it out to better understand it
-        for (var i = this.main.length - 1; i > 0; i--) {         //with the index traversing from the last element to the first...
+    shuffle() { //Credit to Richard Durstenfield for his classic shuffle method, I'll comment it out to better understand it
+        for (var i = this.main.length - 1; i > 0; i--) {        //with the index traversing from the last element to the first...
             var j = Math.floor(Math.random() * (i + 1));        //the function picks a random element between 1 and the index
-            var temp = this.main[i];                        //set a temp variable as the element at i
+            var temp = this.main[i];                            //set a temp variable as the element at i
             this.main[i] = this.main[j];                        //i becomes j (the random element)
             this.main[j] = temp;                                //and j becomes what i was
-        }
-    }
-
-    shuffleWinnings() {
-        for (var i = this.winnings.length - 1; i > 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1));
-            var temp = this.winnings[i];
-            this.winnings[i] = this.main[j];
-            this.winnings[j] = temp;                                
         }
     }
 }
@@ -71,6 +72,8 @@ function determineWinner() {
 
 //THE START METHOD:----------------------------------------
 let totalDeck = new Deck([], []);
+let playerDeck = new Deck([],[])
+let computerDeck = new Deck([],[])
 let gameHasEnded = false;
 
 //Make the Deck
@@ -84,15 +87,17 @@ for (let i = 1; i <= 4; i++) {
 }
 
 //Shuffle
-totalDeck.shuffleMain();
+totalDeck.shuffle();
 
-//Split the Deck
-let playerDeck = new Deck([], []);
-let computerDeck = new Deck([], []);
+//Deal the Deck - one for me, one for you, twenty six times.
+for (let index = 0; index < 26; index++) {
+    playerDeck.main.push(totalDeck.main.pop());
+    computerDeck.main.push(totalDeck.main.pop());
+}
+
+//Ensure they both have 26 shuffled cards
+console.log(playerDeck.main); 
+console.log(computerDeck.main);
 
 //THE GAME ------------------------------------------------
-console.log(totalDeck.main);
-
-console.log(playerDeck.main);
-console.log(computerDeck.main);
 
