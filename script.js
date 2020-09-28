@@ -38,11 +38,14 @@ class Deck {
 
     drawCard() {
         if (this.main.length > 0) {
-            this.main.pop
+            return this.main.pop();
         }
         else if (this.main.length = 0) {
             this.main = this.winnings;
             this.winnings = [];
+            console.log("Shuffling!")
+            this.shuffle(this.main);
+            return this.main.pop();
         } else { console.log("error");}
         
     }
@@ -100,4 +103,20 @@ console.log(playerDeck.main);
 console.log(computerDeck.main);
 
 //THE GAME ------------------------------------------------
+function flipCard() {
 
+    if (playerDeck.totalLength() <= 0 || computerDeck.totalLength() <= 0) determineWinner();
+
+    else { //run a turn...
+
+        console.log("player has " + playerDeck.totalLength() + " cards remaining total.");
+        console.log("computer has " + computerDeck.totalLength() + " cards remaining total.");
+
+        let playerCardInPlay = playerDeck.drawCard();
+        let computerCardInPlay = computerDeck.drawCard();
+        
+        playerCardImage.innerText = playerCardInPlay.number + " of " + playerCardInPlay.resolveSuit();
+        computerCardImage.innerText = computerCardInPlay.number + " of " + computerCardInPlay.resolveSuit();
+
+    }
+}
