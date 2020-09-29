@@ -29,7 +29,15 @@ class Card {
             case 4:
                 return "♠";
         }
-    }   
+    }
+    
+    resolveFace() {
+        if (this.number < 11) return this.number;
+        else if (this.number == 11) return "jack";
+        else if (this.number == 12) return "queen";
+        else if (this.number == 13) return "king";
+        else if (this.number == 14) return "ace";
+    }
 }
 
 class Deck {
@@ -127,8 +135,8 @@ function flipCard() {
         let playerCardInPlay = playerDeck.drawCard();
         let computerCardInPlay = computerDeck.drawCard();
         
-        playerCardImage.innerText = playerCardInPlay.number + " of " + playerCardInPlay.resolveSuit();
-        computerCardImage.innerText = computerCardInPlay.number + " of " + computerCardInPlay.resolveSuit();
+        playerCardImage.innerText = playerCardInPlay.resolveFace() + " of " + playerCardInPlay.resolveSuit();
+        computerCardImage.innerText = computerCardInPlay.resolveFace() + " of " + computerCardInPlay.resolveSuit();
     
         console.log("-----");
         console.log("flipping cards...");
