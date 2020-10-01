@@ -1,13 +1,10 @@
 //DOM queries
 let playerDeckImage = document.getElementById("playerDeck");
 let computerDeckImage = document.getElementById("computerDeck");
-
 let playerCardImage = document.getElementById("playerCard");
 let computerCardImage = document.getElementById("computerCard");
-
 let playerPrizesImage = document.getElementById("playerPrizes");
 let computerPrizesImage = document.getElementById("computerPrizes");
-
 let potTrackerText = document.getElementById("potTracker");
 
 //1 = Clubs, 2 = Diamonds, 3 = Hearts, 4 = Spades
@@ -41,14 +38,16 @@ class Card {
 }
 
 class Deck {
-    constructor(array1, array2) {
-      this.main = array1;
-      this.winnings = array2;
+    constructor(name, array1, array2) {
+        this.name = name;
+        this.main = array1;
+        this.winnings = array2;
     }
 
     drawCard() {
+        console.log(this.name + " has " + this.totalLength() + " cards left to draw.");
         if (this.totalLength() == 0) {
-            console.log("Ran out of Cards!");
+            console.log(this.name + "Ran out of Cards!");
         } 
         else if (this.main.length > 0) {
             return this.main.pop();
@@ -56,7 +55,7 @@ class Deck {
         else if (this.main.length == 0) {
             this.main = this.winnings;
             this.winnings = [];
-            console.log("Shuffling!")
+            console.log(this.name + " is Shuffling!");
             this.shuffle(this.main);
             return this.drawCard();
         } else { console.log("error");}
@@ -81,26 +80,36 @@ class Deck {
     }
 }
 
-
 function determineWinner() {
     gameHasEnded = true;
-    if (playerDeck.totalLength() > computerDeck.totalLength()) console.log("The Player Won!")
-    else if (computerDeck.totalLength() > playerDeck.totalLength()) console.log("The Computer Won!")
+    if (playerDeck.totalLength() > computerDeck.totalLength()) {
+        holdoverWinnings.winnings.forEach(element => {playerDeck.winnings.push(element)});
+        console.log("The Player Won!")
+    }
+    else if (computerDeck.totalLength() > playerDeck.totalLength()) {
+        holdoverWinnings.winnings.forEach(element => {computerDeck.winnings.push(element)});
+        console.log("The Computer Won!")
+    }
     else console.log("ERROR!")
-
-
 }
 
+function playOut() {
+    while (!gameHasEnded) {
+        flipCard();
+    }
+}
+
+function reset() {  location.reload(); }
+
 //THE START METHOD:----------------------------------------
-let totalDeck = new Deck([],[]);
-let playerDeck = new Deck([],[])
-let computerDeck = new Deck([],[])
-let holdoverWinnings = new Deck([],[]);
+let totalDeck = new Deck("Total",[],[]);
+let playerDeck = new Deck("Player",[],[]);
+let computerDeck = new Deck("Computer",[],[]);
+let holdoverWinnings = new Deck("Winnings",[],[]);
 
 let gameHasEnded = false;
-let gameInWarState = false;
 
-//Make the Deck
+//Make the Total Deck
 for (let i = 1; i <= 4; i++) {
     for (let j = 2; j <= 14; j++) {
         var tempCard = new Card(j,i);
@@ -110,7 +119,7 @@ for (let i = 1; i <= 4; i++) {
     if (i == 4) console.log("done!");
 }
 
-//Shuffle
+//Shuffle 52
 totalDeck.shuffle();
 
 //Deal the Deck - one for me, one for you, twenty six times.
@@ -127,39 +136,35 @@ console.log(computerDeck.main);
 function flipCard() {
 
     if (playerDeck.totalLength() <= 0 || computerDeck.totalLength() <= 0) determineWinner();
-    else { //run a turn...
 
-        console.log("player has " + playerDeck.totalLength() + " cards remaining total.");
-        console.log("computer has " + computerDeck.totalLength() + " cards remaining total.");
-
+    else {
+        console.log("-----");
         let playerCardInPlay = playerDeck.drawCard();
         let computerCardInPlay = computerDeck.drawCard();
         
         playerCardImage.innerText = playerCardInPlay.resolveFace() + " of " + playerCardInPlay.resolveSuit();
         computerCardImage.innerText = computerCardInPlay.resolveFace() + " of " + computerCardInPlay.resolveSuit();
     
-        console.log("-----");
         console.log("flipping cards...");
         console.log("the player flipped..." + playerCardInPlay.number + " of " + playerCardInPlay.resolveSuit());
         console.log("the computer flipped..." + computerCardInPlay.number + " of " + computerCardInPlay.resolveSuit());
 
         if (playerCardInPlay.number > computerCardInPlay.number) {
+            console.log("Player won the flip");
             playerDeck.winnings.push(playerCardInPlay);
             playerDeck.winnings.push(computerCardInPlay);
             holdoverWinnings.winnings.forEach(element => {playerDeck.winnings.push(element)}); //for each e in prizecards, push that element into p winnings, can be zero!
             holdoverWinnings.winnings = [];
-            gameInWarState = false;
         }
         else if (computerCardInPlay.number > playerCardInPlay.number) {
+            console.log("Computer won the flip");
             computerDeck.winnings.push(playerCardInPlay);
             computerDeck.winnings.push(computerCardInPlay);
             holdoverWinnings.winnings.forEach(element => {computerDeck.winnings.push(element)}); //for each e in prizecards, push that element into p winnings, can be zero!
             holdoverWinnings.winnings = [];
-            gameInWarState = false;
         } 
         else if (computerCardInPlay.number == playerCardInPlay.number) {
-            gameInWarState = true;
-            console.log("GET READY FOR WAR YOU DOGS!");
+            console.log("GET READY FOR WAR!");
             holdoverWinnings.winnings.push(playerCardInPlay);       //the identical cards go into the bucket 1
             holdoverWinnings.winnings.push(computerCardInPlay);     //the identical cards go into the bucket 2
             for (let i = 0; i < 3; i++) {                           //plus 3 more each
@@ -178,9 +183,3 @@ function flipCard() {
     }
 }
 
-function playOut() {
-    while (!gameHasEnded) {
-        flipCard();
-    }
-    potTrackerText.innerText = "cards left in last pot: " + holdoverWinnings.winnings.length;
-}
