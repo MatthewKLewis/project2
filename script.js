@@ -101,7 +101,7 @@ function playOut() {
 
 function reset() {  location.reload(); }
 
-//THE START METHOD:----------------------------------------
+//THE START "METHOD":----------------------------------------
 let totalDeck = new Deck("Total",[],[]);
 let playerDeck = new Deck("Player",[],[]);
 let computerDeck = new Deck("Computer",[],[]);
